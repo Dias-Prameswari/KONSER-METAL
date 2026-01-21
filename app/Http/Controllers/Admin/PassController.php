@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Pass;
+use App\Models\PassType;
 
 class PassController extends Controller
 {
@@ -34,10 +35,10 @@ class PassController extends Controller
 
         $validatedData = $request->validate([
             'show_id' => ['required', 'exists:shows,id'],
-            'tipe' => [
+            'pass_type_id' => [
                 'required',
-                Rule::in(['regular', 'premium']),
-                Rule::unique('passes', 'tipe')
+                'exists:pass_types,id',
+                Rule::unique('passes', 'pass_type_id')
                     ->where(fn($q) => $q->where('show_id', $showId)),
             ],
             'harga' => ['required', 'numeric', 'min:0'],
@@ -76,10 +77,10 @@ class PassController extends Controller
         $showId = $pass->show_id;
 
         $validatedData = $request->validate([
-            'tipe' => [
+            'pass_type_id' => [
                 'required',
-                Rule::in(['regular', 'premium']),
-                Rule::unique('passes', 'tipe')
+                'exists:pass_types,id',
+                Rule::unique('passes', 'pass_type_id')
                     ->where(fn($q) => $q->where('show_id', $showId))
                     ->ignore($pass->id),
             ],

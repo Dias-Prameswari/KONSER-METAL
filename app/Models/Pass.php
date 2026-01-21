@@ -11,7 +11,8 @@ class Pass extends Model
 
     protected $fillable = [ // mass assignable
         'show_id', // foreign key ke tabel shows
-        'tipe', // tipe pass: regular atau premium
+        // 'tipe', // tipe pass: regular atau premium
+        'pass_type_id',
         'harga', // harga pass
         'stok', // stok pass
     ];
@@ -30,5 +31,10 @@ class Pass extends Model
     {
         return $this->belongsToMany(Booking::class, 'booking_items')
             ->withPivot('jumlah', 'subtotal_harga');
+    }
+
+    public function passType()
+    {
+        return $this->belongsTo(PassType::class);
     }
 }

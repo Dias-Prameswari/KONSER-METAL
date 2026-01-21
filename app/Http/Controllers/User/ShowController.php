@@ -10,14 +10,14 @@ class ShowController extends Controller
 {
     public function show(Show $show)
     {
-        $show->load(['passes', 'genre', 'user']);
+        $show->load(['passes.passType', 'genre', 'user']);
 
         $passesData = $show->passes->map(function ($pass) {
         return [
             'id'    => $pass->id,
             'price' => $pass->harga ?? 0,
             'stock' => $pass->stok,
-            'tipe'  => $pass->tipe,
+            'tipe'  => $pass->passType->nama ?? '-',
         ];
     })->values();
 

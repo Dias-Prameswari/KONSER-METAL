@@ -25,7 +25,7 @@
             @foreach($booking->bookingItems as $d)
               <div class="flex justify-between items-center">
                 <div>
-                  <div class="font-bold">{{ $d->pass->tipe }}</div>
+                  <div class="font-bold">{{ $d->pass->passType->nama ?? '-' }}</div>
                   <div class="text-sm text-gray-500">Qty: {{ $d->jumlah }}</div>
                 </div>
                 <div class="text-right">

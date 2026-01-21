@@ -55,13 +55,13 @@ window.openDeletePassModal = (button) => {
 // edit model
 window.openEditModal = (button) => {
     const id = button.dataset.id;
-    const tipe = button.dataset.tipe;
+    const passTypeId = button.dataset.passTypeId;
     const harga = button.dataset.harga;
     const stok = button.dataset.stok;
 
     const form = document.querySelector("#edit_pass_modal form");
     document.getElementById("edit_pass_id").value = id;
-    document.getElementById("edit_tipe").value = tipe;
+    document.getElementById("edit_pass_type_id").value = passTypeId;
     document.getElementById("edit_harga").value = harga;
     document.getElementById("edit_stok").value = stok;
 

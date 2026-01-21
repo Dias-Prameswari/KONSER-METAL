@@ -47,7 +47,7 @@
                             @forelse($show->passes as $pass)
                             <div class="card card-side shadow-sm p-4 items-center">
                                 <div class="flex-1">
-                                    <h4 class="font-bold">{{ $pass->tipe }}</h4>
+                                    <h4 class="font-bold">{{ $pass->passType->nama ?? '-' }}</h4>
                                     <p class="text-sm text-gray-500">Stok: <span id="stock-{{ $pass->id }}">{{ $pass->stok }}</span></p>
                                     <p class="text-sm mt-2">{{ $pass->keterangan ?? '' }}</p>
                                 </div>

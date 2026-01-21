@@ -28,7 +28,7 @@ class BookingController extends Controller
     public function show(Booking $booking)
     {
         abort_unless($booking->user_id === Auth::id(), 403);
-        $booking->load('bookingItems.pass', 'show');
+        $booking->load(['show', 'bookingItems.pass.passType']);
         return view('bookings.show', compact('booking'));
     }
 
@@ -50,9 +50,10 @@ class BookingController extends Controller
                 $total = 0;
                 // validate stock and calculate total
                 foreach ($data['items'] as $it) {
-                    $t = Pass::lockForUpdate()->findOrFail($it['pass_id']);
+                    $t = Pass::with('passType')->lockForUpdate()->findOrFail($it['pass_id']);
                     if ($t->stok < $it['jumlah']) {
-                        throw new \Exception("Stok tidak cukup untuk tipe: {$t->tipe}");
+                        $namaTipe = $t->passType->nama ?? '-';
+                        throw new \Exception("Stok tidak cukup untuk tipe: {$namaTipe}");
                     }
                     $total += ($t->harga ?? 0) * $it['jumlah'];
                 }

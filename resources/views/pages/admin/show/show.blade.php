@@ -130,16 +130,17 @@
                     @forelse ($passes as $index => $pass)
                     <tr>
                         <th>{{ $index + 1 }}</th>
-                        <td>{{ $pass->tipe }}</td>
+                        <td>{{ $pass->passType->nama ?? '-' }}</td>
                         <td>{{ $pass->harga }}</td>
                         <td>{{ $pass->stok }}</td>
                         <td>
                             <button class="btn btn-sm btn-primary mr-2" onclick="openEditModal(this)"
-                                data-id="{{ $pass->id }}" data-tipe="{{ $pass->tipe }}"
+                                data-id="{{ $pass->id }}"
+                                data-pass-type-id="{{ $pass->pass_type_id }}"
                                 data-harga="{{ $pass->harga }}"
                                 data-stok="{{ $pass->stok }}">Edit</button>
-                            <button type="button" class="btn btn-sm bg-red-500 text-white" 
-                            onclick="openDeletePassModal(this)"
+                            <button type="button" class="btn btn-sm bg-red-500 text-white"
+                                onclick="openDeletePassModal(this)"
                                 data-id="{{ $pass->id }}">Hapus</button>
                         </td>
                     </tr>
@@ -166,10 +167,11 @@
                 <label class="label">
                     <span class="label-text font-semibold">Tipe Pass</span>
                 </label>
-                <select name="tipe" class="select select-bordered w-full" required>
+                <select name="pass_type_id" class="select select-bordered w-full" required>
                     <option value="" disabled selected>Pilih Tipe Pass</option>
-                    <option value="regular">Regular</option>
-                    <option value="premium">Premium</option>
+                    @foreach ($passTypes as $pt)
+                    <option value="{{ $pt->id }}">{{ $pt->nama }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-control mb-4">
@@ -207,10 +209,11 @@
                 <label class="label">
                     <span class="label-text font-semibold">Tipe Pass</span>
                 </label>
-                <select name="tipe" id="edit_tipe" class="select select-bordered w-full" required>
+                <select name="pass_type_id" id="edit_pass_type_id" class="select select-bordered w-full" required>
                     <option value="" disabled selected>Pilih Tipe Pass</option>
-                    <option value="regular">Regular</option>
-                    <option value="premium">Premium</option>
+                    @foreach ($passTypes as $pt)
+                    <option value="{{ $pt->id }}">{{ $pt->nama }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-control mb-4">

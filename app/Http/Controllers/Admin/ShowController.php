@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Show;
 use App\Models\Genre;
+use App\Models\PassType;
 
 class ShowController extends Controller
 {
@@ -65,8 +66,9 @@ class ShowController extends Controller
         $show = Show::findOrFail($id); // mencari show berdasarkan id
         $genres = Genre::all(); // mengambil semua genre dari database
         $passes = $show->passes; // mengambil semua passes/ticket yang terkait dengan show ini
+        $passTypes = PassType::orderBy('nama')->get();
 
-        return view('pages.admin.show.show', compact('show', 'genres', 'passes')); // mengirim data show ke
+        return view('pages.admin.show.show', compact('show', 'genres', 'passes', 'passTypes')); // mengirim data show ke
 
     }
 
