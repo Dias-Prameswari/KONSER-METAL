@@ -12,6 +12,8 @@ class Booking extends Model
     protected $casts = [ // casting attributes
         'total_harga' => 'decimal:2', // casting total_harga ke decimal dengan 2 desimal
         'order_date' => 'datetime', // casting order_date ke datetime
+        'discount_amount' => 'decimal:2',
+        'final_total' => 'decimal:2',
     ];
 
     protected $fillable = [ // mass assignable
@@ -19,6 +21,10 @@ class Booking extends Model
         'show_id', // foreign key ke tabel shows   
         'order_date', // tanggal booking
         'total_harga', // total harga
+        'payment_type_id', // tipe pembayaran
+        'discount_id',
+        'discount_amount',
+        'final_total',
     ];
 
     public function user() // relasi ke model User
@@ -40,5 +46,15 @@ class Booking extends Model
     public function bookingItems() // relasi ke model BookingItem
     {
         return $this->hasMany(BookingItem::class);
+    }
+
+    public function paymentType() // relasi ke table payment type
+    {
+        return $this->belongsTo(PaymentType::class, 'payment_type_id');
+    }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
     }
 }

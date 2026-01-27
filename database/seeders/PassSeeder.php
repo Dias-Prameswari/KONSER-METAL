@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Pass; // import model Pass dari app/Models/Pass.php
 use App\Models\Show; // import model Show dari app/Models/Show.php
+use App\Models\PassType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,8 @@ class PassSeeder extends Seeder
     public function run(): void
     {
         $showMap = Show::pluck('id', 'judul'); // ambil semua show, key: judul, value: id
+
+        $passTypeMap = PassType::pluck('id', 'nama');
 
         $passes = [ // daftar pass untuk setiap show
             // passes untuk show pertama
@@ -65,11 +68,16 @@ class PassSeeder extends Seeder
                 throw new \Exception("Show '{$p['show']}' belum ada. Jalankan ShowSeeder dulu.");
             }
 
+            $passTypeId = $passTypeMap[$p['tipe']] ?? null;
+            if (!$passTypeId) {
+                throw new \Exception("PassType '{$p['tipe']}' belum ada. Jalankan PassTypeSeeder dulu.");
+            }
+
             // Unik per show_id + tipe
             Pass::updateOrCreate(
                 [ // kunci unik untuk menghindari duplikat
                     'show_id' => $showId,
-                    'tipe' => $p['tipe'],
+                    'pass_type_id' => $passTypeId,
                 ],
                 [ // data untuk diupdate atau dicreate
                     'harga' => $p['harga'],

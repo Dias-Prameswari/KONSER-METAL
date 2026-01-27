@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\BookingItem;
 use App\Models\Booking;
 use App\Models\Pass;
+use App\Models\Discount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ class BookingController extends Controller
     {
         $user = Auth::user();
         $bookings = Booking::where('user_id', $user->id)
-            ->with('show')
+            ->with(['show', 'paymentType', 'discount'])
             ->orderByDesc('created_at')
             ->get();
 
@@ -28,7 +29,7 @@ class BookingController extends Controller
     public function show(Booking $booking)
     {
         abort_unless($booking->user_id === Auth::id(), 403);
-        $booking->load(['show', 'bookingItems.pass.passType']);
+        $booking->load(['show', 'paymentType', 'discount' ,'bookingItems.pass.passType']);
         return view('bookings.show', compact('booking'));
     }
 
@@ -42,6 +43,7 @@ class BookingController extends Controller
             'items' => 'required|array|min:1',
             'items.*.pass_id' => 'required|integer|exists:passes,id',
             'items.*.jumlah' => 'required|integer|min:1',
+            'payment_type_id' => 'required|exists:payment_types,id',
         ]);
 
         try {
@@ -58,11 +60,51 @@ class BookingController extends Controller
                     $total += ($t->harga ?? 0) * $it['jumlah'];
                 }
 
+                //discount
+                $now = Carbon::now();
+
+                $activeDiscounts = Discount::query()
+                    ->where('is_active', true)
+                    ->where(function ($q) use ($now) {
+                        $q->whereNull('start_at')->orWhere('start_at', '<=', $now);
+                    })
+                    ->where(function ($q) use ($now) {
+                        $q->whereNull('end_at')->orWhere('end_at', '>=', $now);
+                    })
+                    ->get();
+
+                $bestDiscountId = null;
+                $bestDiscountAmount = 0.0;
+
+                foreach ($activeDiscounts as $d) {
+                    $amount = 0.0;
+
+                    if ($d->type === 'percent') {
+                        $amount = $total * ((float)$d->value / 100);
+                    } elseif ($d->type === 'fixed') {
+                        $amount = (float)$d->value;
+                    }
+
+                    $amount = max(0, min($amount, $total));
+
+                    if ($amount > $bestDiscountAmount) {
+                        $bestDiscountAmount = $amount;
+                        $bestDiscountId = $d->id;
+                    }
+                }
+
+                $finalTotal = $total - $bestDiscountAmount;
+
                 $booking = Booking::create([
                     'user_id' => Auth::id(),
                     'show_id' => $data['show_id'],
                     'order_date' => Carbon::now(),
                     'total_harga' => $total,
+                    'payment_type_id' => $data['payment_type_id'],
+                    'discount_id' => $bestDiscountId,
+                    'discount_amount' => $bestDiscountAmount,
+                    'final_total' => $finalTotal,
+
                 ]);
 
                 foreach ($data['items'] as $it) {

@@ -13,7 +13,10 @@ class RiwayatBookingController extends Controller
      */
     public function index()
     {
-        $riwayats = Booking::with(['user', 'show'])->orderByDesc('order_date')->get();
+        $riwayats = Booking::with(['user', 'show', 'paymentType'])
+                ->orderByDesc('order_date')
+                ->get();
+
         return view('pages.admin.riwayat.index', compact('riwayats'));
     }
 
@@ -38,7 +41,13 @@ class RiwayatBookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        $booking->load(['show','bookingItems.pass']);
+        $booking->load([
+            'user',
+            'show',
+            'paymentType',
+            'bookingItems.pass'
+        ]);
+        
         return view('pages.admin.riwayat.show', compact('booking'));
     }
 

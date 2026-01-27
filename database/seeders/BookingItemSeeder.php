@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Booking; // import model Booking dari app/Models/Booking.php
 use App\Models\BookingItem; // import model BookingItem dari app/Models/BookingItem.php
 use App\Models\Pass; // import model Pass dari app/Models/Pass.php
+use App\Models\PassType;
 use App\Models\Show; // import model Show dari app/Models/Show.php
 use App\Models\User; // import model User dari app/Models/User.php
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,6 +22,8 @@ class BookingItemSeeder extends Seeder
 
         // map judul show => id show, supaya tidak pakai angka ID yang bisa berubah
         $showMap = Show::pluck('id', 'judul'); // ambil semua show, key: judul, value: id
+
+        $passTypeMap = PassType::pluck('id', 'nama');
 
         // daftar item yang akan dibeli (2 booking, masing-masing 1 item)
         $items = [
@@ -48,6 +51,13 @@ class BookingItemSeeder extends Seeder
                 throw new \Exception("Show '{$it['show']}' belum ada. Jalankan ShowSeeder dulu.");
             }
 
+            $passTypeId = $passTypeMap[$it['tipe_pass']] ?? null;
+
+            if (!$passTypeId) {
+                throw new \Exception("PassType '{$it['tipe_pass']}' belum ada. Jalankan PassTypeSeeder dulu.");
+            }
+
+
             // ambil booking sesuai user, show, dan order_date
             $booking = Booking::where('user_id', $user->id)
                 ->where('show_id', $showId)
@@ -56,7 +66,7 @@ class BookingItemSeeder extends Seeder
 
             // ambil pass sesuai show dan tipe
             $pass = Pass::where('show_id', $showId)
-                ->where('tipe', $it['tipe_pass'])
+                ->where('pass_type_id', $passTypeId)
                 ->firstOrFail();
 
             $subtotal = $it['jumlah'] * $pass->harga;

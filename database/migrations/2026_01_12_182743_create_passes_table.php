@@ -13,8 +13,15 @@ return new class extends Migration
     {
         Schema::create('passes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('show_id')->constrained()->onDelete('cascade'); // foreign key ke tabel shows
-            $table->enum("tipe", ["regular", "premium"]); // tipe pass: regular atau premium
+
+            $table->foreignId('show_id')
+                    ->constrained()
+                    ->onDelete('cascade'); // foreign key ke tabel shows
+
+            $table->foreignId('pass_type_id')
+                    ->constrained('pass_types')
+                    ->cascadeOnDelete(); // tipe pass: regular, premium, vip, early bird
+
             $table->decimal("harga", 10, 2); // harga pass
             $table->integer("stok"); // stok pass
             $table->timestamps();

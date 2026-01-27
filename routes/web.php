@@ -4,7 +4,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\ShowController;
 use App\Http\Controllers\Admin\PassController;
+use App\Http\Controllers\Admin\PassTypeController;
+use App\Http\Controllers\Admin\PaymentTypeController;
 use App\Http\Controllers\Admin\RiwayatBookingController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Admin\ShowController as AdminShowController;
@@ -29,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
     Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store');
 
-
     // profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -48,6 +50,15 @@ Route::middleware('auth')->group(function () {
         // routes untuk pass
         Route::resource('passes', PassController::class)
             ->only(['store', 'update', 'destroy']);
+        
+        // routes untuk pass type
+        Route::resource('pass-types', PassTypeController::class);
+
+        // routes untuk payment type
+        Route::resource('payment_types', PaymentTypeController::class);
+
+        // routes untuk diskon
+        Route::resource('discounts', DiscountController::class);
 
         // routes untuk riwayat
         Route::get('/riwayats', [RiwayatBookingController::class, 'index'])->name('riwayats.index');

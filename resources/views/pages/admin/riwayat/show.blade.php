@@ -38,8 +38,13 @@
                     <div class="flex justify-between items-center">
                         <span class="font-bold">Total</span>
                         <span class="font-bold text-lg">Rp {{ number_format($booking->total_harga, 0, ',', '.') }}</span>
-
                     </div>
+
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-sm text-gray-500">Metode Pembayaran</span>
+                        <span class="font-semibold">{{ $booking->paymentType?->nama ?? '-' }}</span>
+                    </div>
+                    
                     <div class="sm:ml-auto sm:mt-auto sm:mr-0 mx-auto mt-3 flex gap-2">
                         <a href="{{ route('admin.riwayats.index') }}" class="btn btn-primary">Kembali ke Riwayat</a>
                     </div>

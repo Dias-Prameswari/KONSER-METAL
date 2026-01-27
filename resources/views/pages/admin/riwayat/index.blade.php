@@ -23,6 +23,7 @@
                         <td>{{ $riwayat->show?->judul ?? '-' }}</td>
                         <td>{{ $riwayat->order_date->format('d M Y') }}</td>
                         <td>{{ number_format($riwayat->total_harga, 0, ',', '.') }}</td>
+                        <td>{{ $r->paymentType?->nama ?? '-' }}</td>
                         <td>
                             <a href="{{ route('admin.riwayats.show', $riwayat->id) }}" class="btn btn-sm btn-info text-white">Detail</a>
                         </td>

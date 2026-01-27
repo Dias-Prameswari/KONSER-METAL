@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('passes', function (Blueprint $table) {
-            // tambahan baru
-            $table->unique(['show_id', 'pass_type_id'], 'passes_show_id_pass_type_id_unique');
+        Schema::create('payment_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama')->unique();
+            $table->timestamps();
         });
     }
 
@@ -22,9 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('passes', function (Blueprint $table) {
-            // tambahan baru
-            $table->dropUnique('passes_show_id_pass_type_id_unique');
-        });
+        Schema::dropIfExists('payment_types');
     }
 };

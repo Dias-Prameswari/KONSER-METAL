@@ -35,6 +35,19 @@
                 </a>
             </li>
 
+            <!-- tipe tiket item -->
+            <li class="{{ request()->routeIs('admin.pass-types.*') ? 'bg-gray-200 rounded-lg' : '' }}">
+                <a href="{{ route('admin.pass-types.index') }}" class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Tipe">
+                    <!-- icon tipe -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" />
+                    </svg>
+                    <span class="is-drawer-close:hidden">
+                        Manajemen Tipe Pass
+                    </span>
+                </a>
+            </li>
+
             <!-- show item -->
             <li class="{{ request()->routeIs('admin.shows.*') ? 'bg-gray-200 rounded-lg' : '' }}">
                 <a href="{{ route('admin.shows.index') }}" class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Show">
@@ -58,6 +71,32 @@
                     </svg>
                     <span class="is-drawer-close:hidden">
                         Riwayat Pemesanan
+                    </span>
+                </a>
+            </li>
+
+            <!-- tipe pembayaran item -->
+            <li class="{{ request()->routeIs('admin.payment_types.*') ? 'bg-gray-200 rounded-lg' : '' }}">
+                <a href="{{ route('admin.payment_types.index') }}" class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Tipe">
+                    <!-- icon tipe -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" />
+                    </svg>
+                    <span class="is-drawer-close:hidden">
+                        Manajemen Tipe Pembayaran
+                    </span>
+                </a>
+            </li>
+
+            <!-- diskon pembayaran item -->
+            <li class="{{ request()->routeIs('admin.discounts.*') ? 'bg-gray-200 rounded-lg' : '' }}">
+                <a href="{{ route('admin.discounts.index') }}" class="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Diskon">
+                    <!-- icon tipe -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" />
+                    </svg>
+                    <span class="is-drawer-close:hidden">
+                        Manajemen Diskon
                     </span>
                 </a>
             </li>

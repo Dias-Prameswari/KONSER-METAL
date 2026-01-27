@@ -23,25 +23,49 @@
 
           <div class="space-y-3">
             @foreach($booking->bookingItems as $d)
-              <div class="flex justify-between items-center">
-                <div>
-                  <div class="font-bold">{{ $d->pass->passType->nama ?? '-' }}</div>
-                  <div class="text-sm text-gray-500">Qty: {{ $d->jumlah }}</div>
-                </div>
-                <div class="text-right">
-                  <div class="font-bold">Rp {{ number_format($d->subtotal_harga, 0, ',', '.') }}</div>
-                </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <div class="font-bold">{{ $d->pass->passType->nama ?? '-' }}</div>
+                <div class="text-sm text-gray-500">Qty: {{ $d->jumlah }}</div>
               </div>
+              <div class="text-right">
+                <div class="font-bold">Rp {{ number_format($d->subtotal_harga, 0, ',', '.') }}</div>
+              </div>
+            </div>
             @endforeach
           </div>
 
           <div class="divider"></div>
 
-          <div class="flex justify-between items-center">
-            <span class="font-bold">Total</span>
-            <span class="font-bold text-lg">Rp {{ number_format($booking->total_harga, 0, ',', '.') }}</span>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-bold">Total</span>
+              <span class="font-bold">Rp {{ number_format($booking->total_harga, 0, ',', '.') }}</span>
+            </div>
 
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray-500">
+                Diskon {{ $booking->discount?->nama ? '(' . $booking->discount->nama . ')' : '' }}
+              </span>
+              <span class="text-sm text-gray-500">
+                - Rp {{ number_format($booking->discount_amount, 0, ',', '.') }}
+              </span>
+            </div>
+
+            <div class="divider my-1"></div>
+
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-lg">Total Bayar</span>
+              <span class="font-bold text-lg">Rp {{ number_format($booking->final_total, 0, ',', '.') }}</span>
+            </div>
           </div>
+
+          <div class="flex justify-between items-center mt-2">
+            <span class="text-sm text-gray-500">Metode Pembayaran</span>
+            <span class="font-semibold">{{ $booking->paymentType?->nama ?? '-' }}</span>
+          </div>
+
+          
         </div>
       </div>
     </div>

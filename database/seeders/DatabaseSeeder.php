@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GenreSeeder::class,
             ShowSeeder::class,
+            PassTypeSeeder::class,
             PassSeeder::class,
             BookingSeeder::class,
             BookingItemSeeder::class,

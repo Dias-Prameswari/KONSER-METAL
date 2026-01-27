@@ -123,6 +123,18 @@
                     </div>
                 </div>
 
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-semibold">Metode Pembayaran</span>
+                    </label>
+                    <select id="payment_type_id" name="payment_type_id" class="select select-bordered w-full" required>
+                        <option value="" disabled selected>Pilih metode pembayaran</option>
+                        @foreach($paymentTypes as $pt)
+                        <option value="{{ $pt->id }}">{{ $pt->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="modal-action">
                     <button class="btn">Tutup</button>
                     <button type="button" class="btn btn-primary px-4 !bg-blue-900 text-white" id="confirmCheckout">Konfirmasi</button>
@@ -156,7 +168,11 @@
             const passes = Object.fromEntries(passesArr.map(p => {
                 const price = Number(p.price ?? p.harga ?? 0);
                 const stock = Number(p.stock ?? p.stok ?? 0);
-                return [String(p.id), { ...p, price, stock }];
+                return [String(p.id), {
+                    ...p,
+                    price,
+                    stock
+                }];
             }));
 
             const summaryItemsEl = document.getElementById('summaryItems');
@@ -261,6 +277,14 @@
                 btn.disabled = true;
                 btn.textContent = 'Memproses...';
 
+                const paymentTypeId = document.getElementById('payment_type_id')?.value;
+                if (!paymentTypeId) {
+                    alert('Pilih metode pembayaran dulu');
+                    btn.disabled = false;
+                    btn.textContent = 'Konfirmasi';
+                    return;
+                }
+
                 const items = [];
                 Object.values(passes).forEach(t => {
                     const qty = Number(document.getElementById('qty-' + t.id).value || 0);
@@ -287,6 +311,7 @@
                         },
                         body: JSON.stringify({
                             show_id: showId,
+                            payment_type_id: paymentTypeId,
                             items
                         })
                     });
