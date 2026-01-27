@@ -66,3 +66,55 @@ Genre yang digunakan pada aplikasi:
 3. Pembayaran & Diskon
 - PaymentType hasMany Bookings ; Booking belongsTo PaymentType 
 - Discount hasMany Bookings ; Booking belongsTo Discount 
+## Konsep MVC 
+1. Model (M)
+   - Tugas: mengelola data + relasi ke database (Eloquent ORM).
+   - Contoh di project: Show, Pass, Booking, BookingItem, Genre, PaymentType, Discount.
+   - Relasi ditulis di Model (hasMany, belongsTo, belongsToMany).
+   - Model dipakai controller untuk query (Show::with(...), Booking::create(...), dll).
+2. View (V)
+   - Tugas: tampilan UI (Blade), hanya menampilkan data yang sudah disiapkan controller.
+   - Contoh: resources/views/... seperti halaman shows, bookings, admin riwayat, payment types, discount.
+   - View tidak melakukan query database (hindari logic berat di Blade).
+   - View menerima data dari controller lewat return view('...', compact(...)).
+3. Controller (C)
+   - Tugas: “otak” alur aplikasi: terima request → validasi → panggil model → kirim ke view / redirect.
+   - Contoh: ShowController, BookingController, RiwayatBookingController, PaymentTypeController, dll.
+   - Pola alur: Route → Controller → Model → (kembali) Controller → View
+## Git Clone
+1. buka repository GitHub di browser, copy url repository
+2. url respository: https://github.com/Dias-Prameswari/KONSER-METAL.git
+3. buat folder baru di komputer, buka di vs code
+4. buka terminal, jalankan perintah : git clone (url repository), tunggu sampai selesai
+5. masuk ke direktori project, menu file-open folder, pilih folder project
+6. buka terminal, jalankan perintah install dependency PHP : composer install, tunggu sampai selesai
+7. buka terminal, jalankan perintah install dependency frontend : npm install, tunggu sampai selesai
+8. rename file .env.example menjadi .env, atur konfigurasi database (biasanya di baris 23)
+9. Perubahan .env.example ke .env, diganti bagian ini aja
+- DB_CONNECTION=mysql
+- DB_HOST=127.0.0.1
+- DB_PORT=3306
+- DB_DATABASE=ticketing_system_new
+- DB_USERNAME=root
+- DB_PASSWORD=
+10. buka terminal, jalankan perintah generate app key : php artisan key:generate
+11. buka terminal, jalankan perintah migrasi database: php artisan migrate
+12. buka terminal, jalankan perintah seeder : php artisan db:seed
+13. buka terminal baru, jalankan perintah server laravel : php artisan serve
+14. buka terminal baru, jalankan perintah frontend dev server : npm run dev
+15. disarankan : pakai terminal yang tipenya Command Prompt
+## Fungsi Perintah php artisan yang Sering Dipakai
+1. php artisan key:generate
+   - Membuat APP_KEY di .env untuk keamanan session/enkripsi.
+2. php artisan migrate
+   - Menjalankan file migration untuk membuat/ubah tabel.
+3. php artisan db:seed
+   - Mengisi data awal dari seeder (genre, pass_type, payment_type, dll).
+4. php artisan migrate:fresh --seed
+   - Reset total database (drop semua tabel), lalu migrate ulang + seed. (Hati-hati, data hilang.)
+5. php artisan route:list
+   - Melihat daftar route yang aktif (berguna saat debugging).
+6. php artisan make:model X -m
+   - Buat model sekaligus migration.
+7. php artisan make:controller XController --resource
+   - Buat controller CRUD (index/create/store/show/edit/update/destroy).
