@@ -17,3 +17,6 @@ Genre yang digunakan pada aplikasi:
 3. Tiket → Pass / Passes
 4. Order → Booking
 5. DetailOrder → BookingItem
+## Skema Aplikasi
+1. Use case admin
+![Skema Aplikasi](skema-aplikasi/use-case-admin-tema-konser.png)
