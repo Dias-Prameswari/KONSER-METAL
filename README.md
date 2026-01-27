@@ -26,15 +26,15 @@ Genre yang digunakan pada aplikasi:
 ![Skema Aplikasi](skema-aplikasi/erd-project-konser-workshop-web-developer.jpeg)
 ## ERD dan relasi
 ### Entitas utama
-•	users: data akun dan role (admin / user)
-•	genres: master genre
-•	shows: data konser/show (judul, deskripsi, lokasi, waktu, gambar)
-•	pass_types: master tipe tiket (mis. VIP/Regular/VVIP/early bird)
-•	passes: tiket per show dan tipe (harga, stok)
-•	bookings: transaksi pemesanan (order_date, total, final_total, dll.)
-•	booking_items: detail item transaksi (pass, jumlah, subtotal)
-•	payment_types: master metode pembayaran (opsional di booking)
-•	discounts: master diskon (opsional di booking)
+- users: data akun dan role (admin / user)
+- genres: master genre
+- shows: data konser/show (judul, deskripsi, lokasi, waktu, gambar)
+- pass_types: master tipe tiket (mis. VIP/Regular/VVIP/early bird)
+- passes: tiket per show dan tipe (harga, stok)
+- bookings: transaksi pemesanan (order_date, total, final_total, dll.)
+- booking_items: detail item transaksi (pass, jumlah, subtotal)
+- payment_types: master metode pembayaran (opsional di booking)
+- discounts: master diskon (opsional di booking)
 ### Relasi
 - users 1—* shows (shows.user_id)
 - genres 1—* shows (shows.genre_id)
@@ -48,21 +48,21 @@ Genre yang digunakan pada aplikasi:
 - passes 1—* booking_items (booking_items.pass_id)
 - M:N: bookings *—* passes via booking_items
 - catatan: Secara konsep, Booking ↔ Pass adalah many-to-many karena:
-•	satu booking dapat berisi banyak pass,
-•	satu pass dapat muncul di banyak booking,
-•	hubungan dihubungkan oleh tabel booking_items (booking_id, pass_id) yang juga menyimpan atribut transaksi (jumlah, subtotal_harga).
+  - satu booking dapat berisi banyak pass,
+  - satu pass dapat muncul di banyak booking,
+  - hubungan dihubungkan oleh tabel booking_items (booking_id, pass_id) yang juga menyimpan atribut transaksi (jumlah, subtotal_harga).
 ### Relasi Eloquent
 1. Master & Konten
-•	User hasMany Shows ; Show belongsTo User
-•	Genre hasMany Shows ; Show belongsTo Genre
-•	Show hasMany Passes ; Pass belongsTo Show
-•	PassType hasMany Passes ; Pass belongsTo PassType
+- User hasMany Shows ; Show belongsTo User
+- Genre hasMany Shows ; Show belongsTo Genre
+- Show hasMany Passes ; Pass belongsTo Show
+- PassType hasMany Passes ; Pass belongsTo PassType
 2. Transaksi
-•	User hasMany Bookings ; Booking belongsTo User
-•	Show hasMany Bookings ; Booking belongsTo Show
-•	Booking hasMany BookingItems ; BookingItem belongsTo Booking
-•	Pass hasMany BookingItems ; BookingItem belongsTo Pass
-•	Booking belongsToMany Passes (via booking_items) ; Pass belongsToMany Bookings (via booking_items)
+- User hasMany Bookings ; Booking belongsTo User
+- Show hasMany Bookings ; Booking belongsTo Show
+- Booking hasMany BookingItems ; BookingItem belongsTo Booking
+- Pass hasMany BookingItems ; BookingItem belongsTo Pass
+- Booking belongsToMany Passes (via booking_items) ; Pass belongsToMany Bookings (via booking_items)
 3. Pembayaran & Diskon
-•	PaymentType hasMany Bookings ; Booking belongsTo PaymentType 
-•	Discount hasMany Bookings ; Booking belongsTo Discount 
+- PaymentType hasMany Bookings ; Booking belongsTo PaymentType 
+- Discount hasMany Bookings ; Booking belongsTo Discount 
