@@ -1,9 +1,9 @@
 # KONSER-METAL - Aplikasi Ticketing Konser (Laravel)
 ## Gambaran Umum
-##### Database: ticketing_system_new
-##### Tema: Ticketing konser dengan genre musik metal atau rock
-##### Deskripsi: Aplikasi ini digunakan untuk mengelola show konser (oleh admin) dan pemesanan tiket (oleh user). Data konser dikelompokkan berdasarkan genre, tiket memiliki tipe (mis. Regular/VIP/VVIP, dll) serta stok, dan transaksi booking tersimpan per item dengan jumlah dan subtotal. Sistem juga mendukung metode pembayaran dan diskon yang bersifat opsional.
-##### Genre: 
+- Database: ticketing_system_new
+- Tema: Ticketing konser dengan genre musik metal atau rock
+- Deskripsi: Aplikasi ini digunakan untuk mengelola show konser (oleh admin) dan pemesanan tiket (oleh user). Data konser dikelompokkan berdasarkan genre, tiket memiliki tipe (mis. Regular/VIP/VVIP, dll) serta stok, dan transaksi booking tersimpan per item dengan jumlah dan subtotal. Sistem juga mendukung metode pembayaran dan diskon yang bersifat opsional.
+- Genre: 
 Genre yang digunakan pada aplikasi:
 1.	Heavy Metal
 2.	Metalcore
@@ -11,7 +11,7 @@ Genre yang digunakan pada aplikasi:
 4.	Hard Rock
 5.	Post-Hardcore
 6.	Alternative
-##### Penyesuaian Nama untuk tema konser:
+- Penyesuaian Nama untuk tema konser:
 1. Kategori → Genre
 2. Event → Show
 3. Tiket → Pass / Passes
@@ -24,6 +24,12 @@ Genre yang digunakan pada aplikasi:
 ![Skema Aplikasi](skema-aplikasi/use-case-pembeli-tema-konser.png)
 3. Struktur database
 ![Skema Aplikasi](skema-aplikasi/erd-project-konser-workshop-web-developer.jpeg)
+Relasi data pada sistem konser:
+- Genre berelasi one-to-many dengan Show, artinya satu genre dapat memiliki banyak show, sementara setiap show hanya berada pada satu genre.
+- User juga berelasi one-to-many dengan Show karena satu user (admin) dapat membuat banyak show, tetapi satu show hanya dibuat oleh satu user.
+- Selanjutnya, Show berelasi one-to-many dengan Pass sehingga satu show dapat memiliki beberapa tipe tiket (pass) dengan harga dan stok berbeda, sedangkan setiap pass hanya terkait ke satu show dan satu pass type.
+- Pada proses transaksi, User berelasi one-to-many dengan Booking karena satu user bisa melakukan banyak pemesanan, dan Show juga one-to-many dengan Booking karena satu show bisa dipesan oleh banyak user.
+- Hubungan Booking dan Pass secara konsep adalah many-to-many karena satu booking dapat berisi beberapa pass dan satu pass dapat muncul di banyak booking; relasi ini diwujudkan melalui tabel penghubung BookingItem yang menyimpan jumlah dan subtotal per pass.
 ## ERD dan relasi
 ### Entitas utama
 - users: data akun dan role (admin / user)
@@ -81,6 +87,7 @@ Genre yang digunakan pada aplikasi:
    - Tugas: “otak” alur aplikasi: terima request → validasi → panggil model → kirim ke view / redirect.
    - Contoh: ShowController, BookingController, RiwayatBookingController, PaymentTypeController, dll.
    - Pola alur: Route → Controller → Model → (kembali) Controller → View
+Penerapan MVC pada project ini mengikuti alur Route → Controller → Model → View. Route didefinisikan di routes/web.php dan dipisahkan untuk user dan admin (dilindungi middleware). Controller mengatur logika, misalnya ShowController menampilkan daftar dan detail show untuk user, BookingController menangani proses booking dan riwayat user, sedangkan sisi admin menggunakan controller seperti RiwayatBookingController, PaymentTypeController, DiscountController, dan PassTypeController untuk pengelolaan data. Controller memanggil model (misalnya Show, Pass, Booking, BookingItem) untuk query dan relasi Eloquent, lalu hasilnya dikirim ke Blade di resources/views/... untuk dirender.
 ## Git Clone
 1. buka repository GitHub di browser, copy url repository
 2. url respository: https://github.com/Dias-Prameswari/KONSER-METAL.git
@@ -89,7 +96,7 @@ Genre yang digunakan pada aplikasi:
 5. masuk ke direktori project, menu file-open folder, pilih folder project
 6. buka terminal, jalankan perintah install dependency PHP : composer install, tunggu sampai selesai
 7. buka terminal, jalankan perintah install dependency frontend : npm install, tunggu sampai selesai
-8. rename file .env.example menjadi .env, atur konfigurasi database (biasanya di baris 23)
+8. rename file .env.example menjadi .env, atur konfigurasi database 
 9. Perubahan .env.example ke .env, diganti bagian ini aja
 - DB_CONNECTION=mysql
 - DB_HOST=127.0.0.1
