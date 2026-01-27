@@ -6,6 +6,7 @@ function openEditModal(button) {
     const start = button.dataset.start || "";
     const end = button.dataset.end || "";
     const active = button.dataset.active === "1";
+    const showId = button.dataset.showId || "";
 
     const form = document.querySelector("#edit_modal form");
     // set action form dinamis berdasarkan ID tipe
@@ -18,6 +19,7 @@ function openEditModal(button) {
     document.getElementById("edit_discounts_start").value = start;
     document.getElementById("edit_discounts_end").value = end;
     document.getElementById("edit_discounts_active").checked = active;
+    document.getElementById("edit_discounts_show_id").value = showId;
 
     edit_modal.showModal();
 }
@@ -60,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
             el.dataset.oldEnd || "";
         document.getElementById("edit_discounts_active").checked =
             el.dataset.oldActive === "1";
+        document.getElementById("edit_discounts_show_id").value =
+            el.dataset.oldShowId || "";
 
         edit_modal.showModal();
     } else {

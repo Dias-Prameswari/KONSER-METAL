@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory; //<\Database\Factories\ShowFactory>
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pass;
+use App\Models\Discount;
 
 class Show extends Model
 {
@@ -37,5 +38,10 @@ class Show extends Model
     public function user() // relasi ke model User
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
     }
 }

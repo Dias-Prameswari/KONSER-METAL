@@ -37,6 +37,7 @@
                         <th>Value</th>
                         <th>Mulai</th>
                         <th>Selesai</th>
+                        <th>Show</th>
                         <th>Aktif</th>
                         <th>Aksi</th>
                     </tr>
@@ -61,11 +62,13 @@
                         </td>
                         <td>{{ $discount->start_at ? $discount->start_at->format('d M Y H:i') : '-' }}</td>
                         <td>{{ $discount->end_at ? $discount->end_at->format('d M Y H:i') : '-' }}</td>
+                        <td>{{ $discount->show?->judul ?? 'Semua Event' }}</td>
                         <td>{{ $discount->is_active ? 'Ya' : 'Tidak' }}</td>
                         <td>
                             <button class="btn btn-sm btn-primary mr-2"
                                 onclick="openEditModal(this)"
                                 data-id="{{ $discount->id }}"
+                                data-show-id="{{ $discount->show_id }}"
                                 data-nama="{{ $discount->nama }}"
                                 data-type="{{ $discount->type }}"
                                 data-value="{{ $discount->value }}"
@@ -84,7 +87,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center">
+                        <td colspan="9" class="text-center">
                             Tidak ada diskon tersedia.
                         </td>
                     </tr>
@@ -120,6 +123,19 @@
                     <option value="fixed" {{ old('type') === 'fixed' ? 'selected' : '' }}>fixed</option>
                 </select>
                 @error('type') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+            </div>
+
+            <div class="form-control w-full mb-4">
+                <label class="label"><span class="label-text">Show</span></label>
+                <select class="select select-bordered w-full" name="show_id">
+                    <option value="">Semua Event (Global)</option>
+                    @foreach($shows as $s)
+                    <option value="{{ $s->id }}" {{ old('show_id') == $s->id ? 'selected' : '' }}>
+                        {{ $s->judul }}
+                    </option>
+                    @endforeach
+                </select>
+                @error('show_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div class="form-control w-full mb-3">
@@ -192,6 +208,17 @@
                 @error('value') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
             </div>
 
+            <div class="form-control w-full mb-4">
+                <label class="label"><span class="label-text">Show</span></label>
+                <select class="select select-bordered w-full" id="edit_discounts_show_id" name="show_id">
+                    <option value="">Semua Event (Global)</option>
+                    @foreach($shows as $s)
+                    <option value="{{ $s->id }}">{{ $s->judul }}</option>
+                    @endforeach
+                </select>
+                @error('show_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
+            </div>
+
             <div class="form-control w-full mb-3">
                 <label class="label"><span class="label-text">Mulai</span></label>
                 <input type="datetime-local" class="input input-bordered w-full" id="edit_discounts_start" name="start_at">
@@ -246,6 +273,7 @@
         data-old-value="{{ old('value') }}"
         data-old-start="{{ old('start_at') }}"
         data-old-end="{{ old('end_at') }}"
+        data-old-show-id="{{ old('show_id') }}"
         data-old-active="{{ old('is_active') }}">
     </div>
 

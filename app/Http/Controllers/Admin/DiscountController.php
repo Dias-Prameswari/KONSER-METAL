@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\Discount;
+use App\Models\Show;
 
 class DiscountController extends Controller
 {
@@ -14,8 +15,11 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        $discounts = Discount::orderBy('nama')->get();
-        return view('pages.admin.discounts.index', compact('discounts'));
+        $discounts = Discount::with('show')->orderBy('nama')->get();
+
+        $shows = Show::orderBy('judul')->get();
+
+        return view('pages.admin.discounts.index', compact('discounts', 'shows'));
     }
 
     /**
@@ -32,6 +36,7 @@ class DiscountController extends Controller
     public function store(Request $request)
     {
         $disc = $request->validate([
+            'show_id' => ['nullable', 'exists:shows,id'],
             'nama' => ['required', 'string', 'max:255', 'unique:discounts,nama'],
             'type' => ['required', 'in:percent,fixed'],
             'value' => [
@@ -76,6 +81,7 @@ class DiscountController extends Controller
         $discounts = Discount::findOrFail($id);
 
         $disc = $request->validate([
+            'show_id' => ['nullable', 'exists:shows,id'],
             'nama' => [
                 'required',
                 'string',

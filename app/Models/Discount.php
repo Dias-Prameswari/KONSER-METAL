@@ -16,6 +16,7 @@ class Discount extends Model
     ];
 
     protected $fillable = [
+        'show_id',
         'nama',
         'type',
         'value',
@@ -27,5 +28,10 @@ class Discount extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function show()
+    {
+        return $this->belongsTo(Show::class);
     }
 }
