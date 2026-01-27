@@ -20,3 +20,7 @@ Genre yang digunakan pada aplikasi:
 ## Skema Aplikasi
 1. Use case admin
 ![Skema Aplikasi](skema-aplikasi/use-case-admin-tema-konser.png)
+2. Use case pembeli
+![Skema Aplikasi](skema-aplikasi/use-case-pembeli-tema-konser.png)
+3. Struktur database
+![Skema Aplikasi](skema-aplikasi/erd project konser workshop web developer.jpeg)
